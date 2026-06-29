@@ -29,6 +29,7 @@ use App\Http\Controllers\Public\ProgramController;
 use App\Http\Controllers\Public\StrukturController;
 use App\Http\Controllers\Public\TentangController;
 use App\Http\Controllers\Public\TransparansiController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,12 @@ use Illuminate\Support\Facades\Route;
 | Public site
 |--------------------------------------------------------------------------
 */
+Route::get('/ping', function () {
+    DB::select('select 1');
+
+    return response('ok');
+})->name('ping');
+
 Route::get('/', HomeController::class)->name('beranda');
 Route::get('/tentang', TentangController::class)->name('tentang');
 Route::get('/struktur', StrukturController::class)->name('struktur');

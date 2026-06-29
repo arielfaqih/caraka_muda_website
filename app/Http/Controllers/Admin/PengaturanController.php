@@ -25,6 +25,8 @@ class PengaturanController extends Controller
             'site_name' => ['required', 'string', 'max:120'],
             'tagline' => ['nullable', 'string', 'max:200'],
             'recruitment_open' => ['boolean'],
+            'recruitment_opens_at' => ['nullable', 'date'],
+            'recruitment_closes_at' => ['nullable', 'date', 'after_or_equal:recruitment_opens_at'],
             'contact.email' => ['nullable', 'email'],
             'contact.whatsapp' => ['nullable', 'string'],
             'contact.address' => ['nullable', 'string'],

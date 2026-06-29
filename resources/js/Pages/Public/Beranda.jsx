@@ -69,8 +69,10 @@ export default function Beranda({ settings, featured, latestNews, divisi, albums
                     <div className="reveal">
                         <SectionHead eyebrow="Tentang Kami" title={<>Kami percaya pemuda<br />adalah pembawa perubahan</>} />
                         <p className="muted" style={{ fontSize: '1.05rem', marginTop: -20 }}>
-                            Caraka Muda adalah rumah bagi anak muda yang ingin berbuat lebih. Dari diskusi hangat sampai aksi
-                            nyata di lapangan — semua dimulai dari niat baik dan kerja bareng.
+                            Caraka Muda UPI adalah wadah resmi yang dibentuk oleh Kantor Komunikasi, Informasi dan
+                            Pelayanan Publik (KKIPP) Universitas Pendidikan Indonesia — mewadahi mahasiswa pilihan yang
+                            bertugas menjadi duta informasi positif, mendukung pengelolaan komunikasi publik, serta
+                            membantu relasi media dan publikasi kampus.
                         </p>
                         <div className="row gap12 wrap mt24">
                             <Link href={route('tentang')} className="btn btn-primary">Cerita Lengkap <Icon name="arrow" /></Link>

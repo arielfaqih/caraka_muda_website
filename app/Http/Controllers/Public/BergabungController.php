@@ -19,14 +19,17 @@ class BergabungController extends Controller
 
         return Inertia::render('Public/Bergabung', [
             'settings' => $settings,
-            'recruitmentOpen' => $settings->recruitment_open,
+            'recruitmentStatus' => $settings->recruitmentStatus(),
+            'recruitmentOpen' => $settings->isRecruitmentOpen(),
+            'opensAt' => $settings->recruitment_opens_at,
+            'closesAt' => $settings->recruitment_closes_at,
             'divisi' => Divisi::orderBy('order')->get(),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        abort_unless(Setting::current()->recruitment_open, 403, 'Pendaftaran sedang ditutup.');
+        abort_unless(Setting::current()->isRecruitmentOpen(), 403, 'Pendaftaran sedang ditutup.');
 
         $data = $request->validate([
             'nama' => ['required', 'string', 'max:120'],

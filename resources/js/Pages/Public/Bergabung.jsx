@@ -6,7 +6,29 @@ import SubmitButton from '@/Components/SubmitButton';
 const BENEFIT = ['Pelatihan kepemimpinan', 'Jejaring luas', 'Sertifikat & pengalaman nyata'];
 const SYARAT = ['Pemuda usia 16–28 tahun', 'Punya semangat berkontribusi', 'Berkomitmen mengikuti kegiatan'];
 
-export default function Bergabung({ recruitmentOpen, divisi }) {
+function fmtDateTime(value) {
+    if (!value) return '';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+const CLOSED_COPY = {
+    before_open: (opensAt) => ({
+        title: 'Pendaftaran belum dibuka',
+        desc: opensAt ? `Pendaftaran akan dibuka mulai ${fmtDateTime(opensAt)}. Pantau halaman ini ya!` : 'Pantau halaman ini untuk info pembukaan berikutnya.',
+    }),
+    after_close: () => ({
+        title: 'Pendaftaran telah ditutup',
+        desc: 'Periode pendaftaran kali ini sudah berakhir. Pantau halaman ini untuk info pembukaan berikutnya.',
+    }),
+    closed: () => ({
+        title: 'Pendaftaran sedang ditutup',
+        desc: 'Saat ini kami belum membuka rekrutmen. Pantau halaman ini untuk info pembukaan berikutnya.',
+    }),
+};
+
+export default function Bergabung({ recruitmentOpen, recruitmentStatus, opensAt, closesAt, divisi }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         nama: '', email: '', whatsapp: '', institusi: '', divisi_id: '', motivasi: '',
     });
@@ -29,6 +51,15 @@ export default function Bergabung({ recruitmentOpen, divisi }) {
                     <p className="hero-lede" style={{ margin: '18px auto 0' }}>
                         Satu langkah kecil hari ini bisa jadi cerita besar nanti. Yuk, tumbuh & berdampak bareng kami.
                     </p>
+                    {recruitmentOpen && (opensAt || closesAt) && (
+                        <p className="muted" style={{ marginTop: 10 }}>
+                            {opensAt && closesAt
+                                ? `Periode pendaftaran: ${fmtDateTime(opensAt)} – ${fmtDateTime(closesAt)}`
+                                : closesAt
+                                    ? `Pendaftaran ditutup pada ${fmtDateTime(closesAt)}`
+                                    : `Dibuka sejak ${fmtDateTime(opensAt)}`}
+                        </p>
+                    )}
                 </div>
                 <svg className="hero-wave" viewBox="0 0 1440 70" preserveAspectRatio="none">
                     <path fill="currentColor" d="M0,40 C360,80 720,0 1080,30 C1260,45 1380,55 1440,50 L1440,70 L0,70 Z" />
@@ -109,10 +140,15 @@ export default function Bergabung({ recruitmentOpen, divisi }) {
                             <div style={{ margin: '0 auto 16px', width: 72, height: 72, borderRadius: 22, background: 'var(--ink)', color: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <Icon name="cal" />
                             </div>
-                            <h3 style={{ fontSize: '1.5rem' }}>Pendaftaran sedang ditutup</h3>
-                            <p className="muted" style={{ maxWidth: 420, margin: '10px auto 22px' }}>
-                                Saat ini kami belum membuka rekrutmen. Pantau halaman ini untuk info pembukaan berikutnya.
-                            </p>
+                            {(() => {
+                                const copy = (CLOSED_COPY[recruitmentStatus] || CLOSED_COPY.closed)(opensAt);
+                                return (
+                                    <>
+                                        <h3 style={{ fontSize: '1.5rem' }}>{copy.title}</h3>
+                                        <p className="muted" style={{ maxWidth: 420, margin: '10px auto 22px' }}>{copy.desc}</p>
+                                    </>
+                                );
+                            })()}
                         </div>
                     )}
                 </div>

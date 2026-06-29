@@ -16,6 +16,7 @@ const TENTANG_SUB = [
 ];
 
 const MORE = [
+    ['timeline', 'Timeline', route('timeline'), 'pin'],
     ['prestasi', 'Prestasi', route('prestasi'), 'award'],
     ['transparansi', 'Transparansi', route('transparansi'), 'doc'],
     ['mitra', 'Mitra', route('mitra'), 'heart'],
@@ -29,8 +30,8 @@ export default function NavBar() {
     const path = url.split('?')[0];
     const tentangOn = TENTANG_SUB.some(([, , href]) => path === new URL(href).pathname);
     const user = props.auth?.user;
-    const accountHref = user ? (user.role === 'admin' || user.role === 'super_admin' ? route('admin.dashboard') : route('profil-saya')) : route('login');
-    const accountLabel = user ? (user.role === 'admin' || user.role === 'super_admin' ? 'Dashboard' : 'Profil Saya') : 'Masuk';
+    const accountHref = user ? (user.role === 'admin' || user.role === 'super_admin' ? route('admin.dashboard') : route('profil-saya')) : null;
+    const accountLabel = user ? (user.role === 'admin' || user.role === 'super_admin' ? 'Dashboard' : 'Profil Saya') : null;
 
     return (
         <header className="nav">
@@ -76,9 +77,11 @@ export default function NavBar() {
                     <Link href={route('cari')} className="iconbtn desk-only" aria-label="Cari">
                         <Icon name="search" />
                     </Link>
-                    <Link href={accountHref} className="btn btn-primary btn-sm desk-only">
-                        <Icon name={user ? 'users' : 'logout'} /> {accountLabel}
-                    </Link>
+                    {accountHref && (
+                        <Link href={accountHref} className="btn btn-primary btn-sm desk-only">
+                            <Icon name="users" /> {accountLabel}
+                        </Link>
+                    )}
                     <button className="iconbtn menu-btn" aria-label="Menu" onClick={() => setOpen(true)}>
                         <Icon name="menu" />
                     </button>
@@ -112,11 +115,13 @@ export default function NavBar() {
                         </Link>
                     ))}
                 </div>
-                <div className="drawer-foot">
-                    <Link href={accountHref} className="btn btn-primary btn-block" onClick={() => setOpen(false)}>
-                        <Icon name={user ? 'users' : 'logout'} /> {accountLabel}
-                    </Link>
-                </div>
+                {accountHref && (
+                    <div className="drawer-foot">
+                        <Link href={accountHref} className="btn btn-primary btn-block" onClick={() => setOpen(false)}>
+                            <Icon name="users" /> {accountLabel}
+                        </Link>
+                    </div>
+                )}
             </aside>
         </header>
     );

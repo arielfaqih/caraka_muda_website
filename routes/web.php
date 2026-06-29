@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PengaturanController as AdminPengaturanController
 use App\Http\Controllers\Admin\PengurusController as AdminPengurusController;
 use App\Http\Controllers\Admin\PesanController as AdminPesanController;
 use App\Http\Controllers\Admin\PrestasiController as AdminPrestasiController;
+use App\Http\Controllers\Admin\TimelineController as AdminTimelineController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\BergabungController;
 use App\Http\Controllers\Public\BeritaController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Public\ProfilSayaController;
 use App\Http\Controllers\Public\ProgramController;
 use App\Http\Controllers\Public\StrukturController;
 use App\Http\Controllers\Public\TentangController;
+use App\Http\Controllers\Public\TimelineController;
 use App\Http\Controllers\Public\TransparansiController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +57,7 @@ Route::get('/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.in
 Route::get('/kegiatan/{slug}', [KegiatanController::class, 'show'])->name('kegiatan.show');
 
 Route::get('/galeri', GaleriController::class)->name('galeri');
+Route::get('/timeline', TimelineController::class)->name('timeline');
 Route::get('/prestasi', PrestasiController::class)->name('prestasi');
 Route::get('/transparansi', TransparansiController::class)->name('transparansi');
 Route::get('/mitra', MitraController::class)->name('mitra');
@@ -123,6 +126,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/dokumen/{dokumen}/edit', [AdminDokumenController::class, 'edit'])->name('dokumen.edit');
     Route::put('/dokumen/{dokumen}', [AdminDokumenController::class, 'update'])->name('dokumen.update');
     Route::delete('/dokumen/{dokumen}', [AdminDokumenController::class, 'destroy'])->name('dokumen.destroy');
+
+    Route::get('/timeline', [AdminTimelineController::class, 'index'])->name('timeline.index');
+    Route::get('/timeline/create', [AdminTimelineController::class, 'create'])->name('timeline.create');
+    Route::post('/timeline', [AdminTimelineController::class, 'store'])->name('timeline.store');
+    Route::get('/timeline/{timeline}/edit', [AdminTimelineController::class, 'edit'])->name('timeline.edit');
+    Route::put('/timeline/{timeline}', [AdminTimelineController::class, 'update'])->name('timeline.update');
+    Route::delete('/timeline/{timeline}', [AdminTimelineController::class, 'destroy'])->name('timeline.destroy');
 
     Route::get('/prestasi', [AdminPrestasiController::class, 'index'])->name('prestasi.index');
     Route::get('/prestasi/create', [AdminPrestasiController::class, 'create'])->name('prestasi.create');

@@ -40,8 +40,10 @@ class HomeController extends Controller
      */
     private function liveStats(Setting $settings): array
     {
+        $currentPeriod = Pengurus::where('struktur_type', 'internal')->orderByDesc('period')->value('period');
+
         return [
-            ['v' => Pengurus::count().'+', 'l' => 'Anggota Aktif'],
+            ['v' => Pengurus::where('struktur_type', 'internal')->where('period', $currentPeriod)->count().'+', 'l' => 'Anggota Aktif'],
             ['v' => Kegiatan::where('end_at', '<', now())->count().'+', 'l' => 'Kegiatan Terlaksana'],
             ['v' => (string) max(0, now()->year - $settings->founded), 'l' => 'Tahun Berkarya'],
             ['v' => (string) Prestasi::count(), 'l' => 'Penghargaan'],

@@ -11,7 +11,7 @@ export default function Ticker() {
     return (
         <div className="ticker">
             <div className="ticker-inner">
-                <div className="ticker-label"><Icon name="mega" /> Kabar</div>
+                <div className="ticker-label"><Icon name="mega" /> Layanan</div>
                 <div className="ticker-track">{items}{items}</div>
             </div>
         </div>

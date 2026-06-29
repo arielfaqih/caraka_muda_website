@@ -77,6 +77,45 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        // Struktur internal periode 2026/2027 (data resmi terbaru, menggantikan kepengurusan sebelumnya).
+        $internalPeriod2 = '2026/2027';
+        Pengurus::create(['name' => 'Ariel Hidayatul Faqih', 'role' => 'Koordinator Utama', 'struktur_type' => 'internal', 'period' => $internalPeriod2, 'order' => 0]);
+        Pengurus::create(['name' => 'Salsa Sabila', 'role' => 'Sekretaris', 'struktur_type' => 'internal', 'period' => $internalPeriod2, 'order' => 1]);
+        Pengurus::create(['name' => 'Candra Fajri', 'role' => 'Sekretaris', 'struktur_type' => 'internal', 'period' => $internalPeriod2, 'order' => 2]);
+        Pengurus::create(['name' => 'Fakhira Naila Sausan', 'role' => 'Bendahara', 'struktur_type' => 'internal', 'period' => $internalPeriod2, 'order' => 3]);
+        Pengurus::create(['name' => 'Anma Risanti', 'role' => 'Bendahara', 'struktur_type' => 'internal', 'period' => $internalPeriod2, 'order' => 4]);
+
+        $kadivSeed2 = [
+            'Divisi Internal' => [
+                ['Diva Aldila Sandi', 'Koordinator'],
+            ],
+            'Divisi Eksternal' => [
+                ['Mita Fitri Rahmawati', 'Koordinator'],
+                ['Fedora Ariefa Ardian', 'Public Relation'],
+                ['Muhammad Nadhif Mahardika', 'Media Center'],
+                ['Muhammad Gibran Alfajr', 'Media Center'],
+            ],
+            'Divisi Operasional' => [
+                ['Zahra Rahmandani Aulillah', 'Koordinator'],
+                ['Salsa Sabila', 'Koordinator Bidang AUSD'],
+                ['Zahra Rahmandani Aulillah', 'Koordinator Bidang Layanan Terpadu'],
+                ['Hilya Mulyasani', 'Koordinator Bidang Layanan Kunjungan'],
+                ['Nopi Nurkhaeri', 'Koordinator Bidang Media Sosial'],
+                ['Fauzan Saeful Patah', 'Koordinator Bidang Liputan dan Siaran Pers'],
+                ['Regina Rasyid Althaaf', 'Koordinator Bidang Penyiaran TV'],
+                ['Faisyal Achmad R.', 'Koordinator Bidang Penyiaran Radio'],
+            ],
+        ];
+        $order2 = 5;
+        foreach ($kadivSeed2 as $divisiName => $members) {
+            foreach ($members as [$name, $role]) {
+                Pengurus::create([
+                    'name' => $name, 'role' => $role, 'divisi_id' => $divisiByName[$divisiName]->id, 'struktur_type' => 'internal',
+                    'period' => $internalPeriod2, 'order' => $order2++,
+                ]);
+            }
+        }
+
         // Struktur 3 Seksi KKIPP UPI (data resmi), tempat Caraka Muda menjalani program magang.
         $kkippPeriod = '2025/2026';
 
@@ -285,12 +324,9 @@ class DatabaseSeeder extends Seeder
         }
 
         $mitraSeed = [
-            ['name' => 'Dinas Kepemudaan Kota', 'cat' => 'Pemerintah'],
-            ['name' => 'Komunitas Literasi Kota', 'cat' => 'Komunitas'],
-            ['name' => 'Radio Suara Muda FM', 'cat' => 'Media'],
-            ['name' => 'Koperasi Pemuda Mandiri', 'cat' => 'Sponsor'],
-            ['name' => 'Universitas Nusantara', 'cat' => 'Akademik'],
-            ['name' => 'Yayasan Peduli Sesama', 'cat' => 'Komunitas'],
+            ['name' => 'Agenda UPI', 'cat' => 'Media'],
+            ['name' => 'TV UPI', 'cat' => 'Media'],
+            ['name' => 'Radio UPI', 'cat' => 'Media'],
         ];
         foreach ($mitraSeed as $m) {
             Mitra::create($m);

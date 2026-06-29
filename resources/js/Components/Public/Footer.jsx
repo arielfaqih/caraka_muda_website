@@ -35,8 +35,7 @@ export default function Footer() {
                     </div>
                     <div>
                         <h4>Pengurus</h4>
-                        <p style={{ fontSize: '.9rem', marginBottom: 14 }}>Pendaftaran anggota baru diumumkan lewat Berita.</p>
-                        <Link href={route('login')} className="btn btn-primary btn-sm"><Icon name="logout" /> Masuk</Link>
+                        <p style={{ fontSize: '.9rem' }}>Pendaftaran anggota baru diumumkan lewat Berita.</p>
                     </div>
                 </div>
                 <div className="foot-bottom">

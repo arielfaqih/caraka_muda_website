@@ -8,6 +8,7 @@ const TABS = [
     ['divisi', 'Kelola Divisi', 'grid', route('admin.divisi.index')],
     ['kegiatan', 'Kelola Kegiatan', 'cal', route('admin.kegiatan.index')],
     ['album', 'Kelola Galeri', 'image', route('admin.album.index')],
+    ['timeline', 'Kelola Timeline', 'pin', route('admin.timeline.index')],
     ['prestasi', 'Kelola Prestasi', 'award', route('admin.prestasi.index')],
     ['dokumen', 'Kelola Transparansi', 'doc', route('admin.dokumen.index')],
     ['mitra', 'Kelola Mitra', 'heart', route('admin.mitra.index')],

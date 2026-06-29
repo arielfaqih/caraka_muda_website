@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Berita;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -39,7 +38,14 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'generated_password' => $request->session()->get('generated_password'),
             ],
-            'ticker' => Berita::published()->orderByDesc('published_at')->take(6)->pluck('title'),
+            'ticker' => [
+                'Minta Liputan & Dokumentasi Kegiatan',
+                'Tanya & Lapor lewat Layanan Terpadu',
+                'Ajukan Siaran Pers ke Media',
+                'Ajukan Kunjungan ke UPI',
+                'Pasang Konten di Media Sosial & Videotron',
+                'Minta Siaran Langsung (Live Streaming)',
+            ],
         ];
     }
 }

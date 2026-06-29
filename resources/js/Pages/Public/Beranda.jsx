@@ -18,12 +18,11 @@ export default function Beranda({ settings, featured, latestNews, divisi, albums
                     <div className="reveal in">
                         <span className="hero-tagpill"><span className="dot" /> Organisasi Kepemudaan · Sejak {settings.founded}</span>
                         <h1>Pembawa Pesan,<br /><span className="out">Penggerak</span> Perubahan.</h1>
-                        <p className="hero-lede">
+                        <p className="hero-lede" style={{ textAlign: 'justify' }}>
                             {settings.tagline} Tempat anak muda berkumpul, belajar, dan bergerak menciptakan dampak nyata bagi sekitar.
                         </p>
                         <div className="hero-cta">
                             <Link href={route('tentang')} className="btn btn-white btn-lg">Kenali Kami <Icon name="arrow" /></Link>
-                            <Link href={route('login')} className="btn btn-outline-white btn-lg"><Icon name="logout" /> Masuk</Link>
                         </div>
                         <div className="hero-trust">
                             <span className="row"><Icon name="shield" /> Transparan & terbuka</span>
@@ -68,9 +67,9 @@ export default function Beranda({ settings, featured, latestNews, divisi, albums
                 <div className="grid-2" style={{ alignItems: 'center', gap: 48 }}>
                     <div className="reveal">
                         <SectionHead eyebrow="Tentang Kami" title={<>Kami percaya pemuda<br />adalah pembawa perubahan</>} />
-                        <p className="muted" style={{ fontSize: '1.05rem', marginTop: -20 }}>
+                        <p className="muted" style={{ fontSize: '1.05rem', marginTop: -20, textAlign: 'justify' }}>
                             Caraka Muda UPI adalah wadah resmi yang dibentuk oleh Kantor Komunikasi, Informasi dan
-                            Pelayanan Publik (KKIPP) Universitas Pendidikan Indonesia — mewadahi mahasiswa pilihan yang
+                            Pelayanan Publik (KKIPP) Universitas Pendidikan Indonesia, mewadahi mahasiswa pilihan yang
                             bertugas menjadi duta informasi positif, mendukung pengelolaan komunikasi publik, serta
                             membantu relasi media dan publikasi kampus.
                         </p>
@@ -142,10 +141,10 @@ export default function Beranda({ settings, featured, latestNews, divisi, albums
             <section className="sec-sm"><div className="container">
                 <div className="cta-band reveal">
                     <h2>Siap jadi bagian dari perubahan?</h2>
-                    <p>Pendaftaran anggota baru tidak selalu dibuka — pantau halaman Berita untuk pengumuman pembukaannya.</p>
+                    <p>Pendaftaran anggota baru tidak selalu dibuka, pantau halaman Berita untuk pengumuman pembukaannya.</p>
                     <div className="hero-cta">
-                        <Link href={route('berita.index')} className="btn btn-white btn-lg">
-                            <Icon name="news" /> Pantau Pengumuman
+                        <Link href={route('timeline')} className="btn btn-white btn-lg">
+                            <Icon name="pin" /> Lihat Timeline
                         </Link>
                         <Link href={route('kontak')} className="btn btn-outline-white btn-lg">Hubungi Kami</Link>
                     </div>
@@ -156,8 +155,8 @@ export default function Beranda({ settings, featured, latestNews, divisi, albums
             {!!mitra.length && (
                 <section className="sec-sm"><div className="container">
                     <SectionHead eyebrow="Didukung Oleh" title="Mitra & kolaborator kami" center />
-                    <div className="grid-4 reveal">
-                        {mitra.map((m) => <div key={m.id} className="partner">{m.name}</div>)}
+                    <div className="reveal row wrap" style={{ justifyContent: 'center', gap: 20 }}>
+                        {mitra.map((m) => <div key={m.id} className="partner" style={{ flex: '0 1 240px' }}>{m.name}</div>)}
                     </div>
                 </div></section>
             )}

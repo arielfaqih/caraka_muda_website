@@ -52,7 +52,7 @@ return [
             // AWS_URL = public base URL: https://<project-ref>.supabase.co/storage/v1/object/public/<bucket>
             // Storage::disk('public')->url($path) uses this to generate file URLs.
             'url' => env('AWS_URL'),
-            'use_path_style_endpoint' => true,
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', true),
             'throw' => false,
             'report' => false,
         ] : [

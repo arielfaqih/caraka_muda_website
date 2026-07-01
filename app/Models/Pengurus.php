@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Pengurus extends Model
 {
@@ -22,6 +23,6 @@ class Pengurus extends Model
 
     public function getPhotoUrlAttribute(): ?string
     {
-        return $this->photo ? '/storage/'.$this->photo : null;
+        return $this->photo ? Storage::disk('public')->url($this->photo) : null;
     }
 }

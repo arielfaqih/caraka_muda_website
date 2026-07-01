@@ -7,6 +7,7 @@ use App\Models\AuditLog;
 use App\Models\Divisi;
 use App\Models\Pengurus;
 use App\Models\User;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +48,7 @@ class PengurusController extends Controller
         $data = $this->validated($request);
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('pengurus', 'public');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'pengurus');
         }
 
         $pengurus = Pengurus::create($data);
@@ -72,7 +73,7 @@ class PengurusController extends Controller
             if ($pengurus->photo) {
                 Storage::disk('public')->delete($pengurus->photo);
             }
-            $data['photo'] = $request->file('photo')->store('pengurus', 'public');
+            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'pengurus');
         }
 
         $pengurus->update($data);

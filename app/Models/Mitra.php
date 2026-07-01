@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Mitra extends Model
 {
@@ -12,6 +13,6 @@ class Mitra extends Model
 
     public function getLogoUrlAttribute(): ?string
     {
-        return $this->logo ? '/storage/'.$this->logo : null;
+        return $this->logo ? Storage::disk('public')->url($this->logo) : null;
     }
 }

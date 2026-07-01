@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class AlbumPhoto extends Model
 {
@@ -17,6 +18,6 @@ class AlbumPhoto extends Model
 
     public function getPhotoUrlAttribute(): ?string
     {
-        return $this->path ? '/storage/'.$this->path : null;
+        return $this->path ? Storage::disk('public')->url($this->path) : null;
     }
 }

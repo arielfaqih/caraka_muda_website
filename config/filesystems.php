@@ -38,35 +38,29 @@ return [
             'report' => false,
         ],
 
-        'public' => env('FILESYSTEM_DISK') === 'r2' ? [
+        // Switch to Supabase S3 by setting FILESYSTEM_DISK=supabase in production.
+        // Credentials: Supabase dashboard → Storage → S3 Connection.
+        // Leave unset (or set to "local") for local development.
+        'public' => env('FILESYSTEM_DISK') === 'supabase' ? [
             'driver' => 's3',
-            'key' => env('R2_ACCESS_KEY_ID'),
-            'secret' => env('R2_SECRET_ACCESS_KEY'),
-            'region' => 'auto',
-            'bucket' => env('R2_BUCKET'),
-            'url' => env('R2_URL'),
-            'endpoint' => env('R2_ENDPOINT'),
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'ap-southeast-1'),
+            'bucket' => env('AWS_BUCKET'),
+            // AWS_ENDPOINT  = https://<project-ref>.supabase.co/storage/v1/s3
+            'endpoint' => env('AWS_ENDPOINT'),
+            // AWS_URL = public base URL: https://<project-ref>.supabase.co/storage/v1/object/public/<bucket>
+            // Storage::disk('public')->url($path) uses this to generate file URLs.
+            'url' => env('AWS_URL'),
             'use_path_style_endpoint' => true,
             'throw' => false,
             'report' => false,
         ] : [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            // Use relative URL so Storage::disk('public')->url() works regardless of APP_URL port.
+            'url' => '/storage',
             'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
-        ],
-
-        's3' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
         ],

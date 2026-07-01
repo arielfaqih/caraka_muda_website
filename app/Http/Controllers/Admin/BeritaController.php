@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\Berita;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -34,7 +35,7 @@ class BeritaController extends Controller
         $data['published_at'] = now();
         $data['seed'] = Berita::count();
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('berita', 'public');
+            $data['image'] = ImageOptimizer::store($request->file('image'), 'berita');
         }
 
         $berita = Berita::create($data);
@@ -57,7 +58,7 @@ class BeritaController extends Controller
             if ($berita->image) {
                 Storage::disk('public')->delete($berita->image);
             }
-            $data['image'] = $request->file('image')->store('berita', 'public');
+            $data['image'] = ImageOptimizer::store($request->file('image'), 'berita');
         }
 
         $berita->update($data);

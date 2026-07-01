@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Berita extends Model
 {
@@ -25,8 +26,6 @@ class Berita extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        // Host-relative path so it works regardless of the host/port the app
-        // is actually accessed from (APP_URL doesn't always match that).
-        return $this->image ? '/storage/'.$this->image : null;
+        return $this->image ? Storage::disk('public')->url($this->image) : null;
     }
 }

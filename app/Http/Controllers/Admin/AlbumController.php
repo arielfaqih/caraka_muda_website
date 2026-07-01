@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\AlbumPhoto;
 use App\Models\AuditLog;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -73,7 +74,7 @@ class AlbumController extends Controller
         foreach ($request->file('photos') as $file) {
             AlbumPhoto::create([
                 'album_id' => $album->id,
-                'path' => $file->store("albums/{$album->id}", 'public'),
+                'path' => ImageOptimizer::store($file, "albums/{$album->id}"),
                 'order' => $order++,
             ]);
         }
@@ -93,6 +94,23 @@ class AlbumController extends Controller
         AuditLog::log('album', "Hapus foto dari album: {$album->title}");
 
         return redirect()->route('admin.album.edit', $album)->with('success', 'Foto dihapus.');
+    }
+
+    public function setCoverPhoto(Album $album, AlbumPhoto $photo): RedirectResponse
+    {
+        abort_unless($photo->album_id === $album->id, 404);
+
+        $coverOrder = $album->photos()->min('order');
+
+        if ($photo->order !== $coverOrder) {
+            $oldOrder = $photo->order;
+            $photo->update(['order' => $coverOrder]);
+            $album->photos()->where('id', '!=', $photo->id)->where('order', $coverOrder)->update(['order' => $oldOrder]);
+        }
+
+        AuditLog::log('album', "Ubah foto sampul album: {$album->title}");
+
+        return redirect()->route('admin.album.edit', $album)->with('success', 'Foto sampul diperbarui.');
     }
 
     private function validated(Request $request): array

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\Mitra;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class MitraController extends Controller
         $data = $this->validated($request);
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('mitra', 'public');
+            $data['logo'] = ImageOptimizer::store($request->file('logo'), 'mitra');
         }
 
         $mitra = Mitra::create($data);
@@ -52,7 +53,7 @@ class MitraController extends Controller
             if ($mitra->logo) {
                 Storage::disk('public')->delete($mitra->logo);
             }
-            $data['logo'] = $request->file('logo')->store('mitra', 'public');
+            $data['logo'] = ImageOptimizer::store($request->file('logo'), 'mitra');
         }
 
         $mitra->update($data);

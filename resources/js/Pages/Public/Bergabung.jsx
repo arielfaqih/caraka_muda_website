@@ -2,40 +2,20 @@ import { useForm } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import Icon from '@/Components/Icon';
 import SubmitButton from '@/Components/SubmitButton';
+import { fmtDateTime } from '@/lib/format';
+import { recruitmentClosedCopy } from '@/lib/recruitment';
 
 const BENEFIT = ['Pelatihan kepemimpinan', 'Jejaring luas', 'Sertifikat & pengalaman nyata'];
 const SYARAT = ['Pemuda usia 16–28 tahun', 'Punya semangat berkontribusi', 'Berkomitmen mengikuti kegiatan'];
 
-function fmtDateTime(value) {
-    if (!value) return '';
-    const d = new Date(value);
-    if (Number.isNaN(d.getTime())) return '';
-    return d.toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-}
-
-const CLOSED_COPY = {
-    before_open: (opensAt) => ({
-        title: 'Pendaftaran belum dibuka',
-        desc: opensAt ? `Pendaftaran akan dibuka mulai ${fmtDateTime(opensAt)}. Pantau halaman ini ya!` : 'Pantau halaman ini untuk info pembukaan berikutnya.',
-    }),
-    after_close: () => ({
-        title: 'Pendaftaran telah ditutup',
-        desc: 'Periode pendaftaran kali ini sudah berakhir. Pantau halaman ini untuk info pembukaan berikutnya.',
-    }),
-    closed: () => ({
-        title: 'Pendaftaran sedang ditutup',
-        desc: 'Saat ini kami belum membuka rekrutmen. Pantau halaman ini untuk info pembukaan berikutnya.',
-    }),
-};
-
 export default function Bergabung({ recruitmentOpen, recruitmentStatus, opensAt, closesAt, divisi }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        nama: '', email: '', whatsapp: '', institusi: '', divisi_id: '', motivasi: '',
+        nama: '', email: '', whatsapp: '', institusi: '', divisi_id: '', motivasi: '', cv: null, portofolio: null,
     });
 
     function submit(e) {
         e.preventDefault();
-        post(route('bergabung.store'), { onSuccess: () => reset() });
+        post(route('bergabung.store'), { forceFormData: true, onSuccess: () => reset() });
     }
 
     return (
@@ -128,6 +108,18 @@ export default function Bergabung({ recruitmentOpen, recruitmentStatus, opensAt,
                                     <label className="label">Motivasi Bergabung</label>
                                     <textarea className="textarea" value={data.motivasi} onChange={(e) => setData('motivasi', e.target.value)} placeholder="Ceritakan kenapa kamu ingin bergabung…" />
                                 </div>
+                                <div className="field">
+                                    <label className="label">CV <span className="req">*</span></label>
+                                    <input className="input" type="file" accept=".pdf" onChange={(e) => setData('cv', e.target.files?.[0] || null)} />
+                                    <p className="hint" style={{ marginTop: 6 }}>Format PDF, maks. 5MB.</p>
+                                    {errors.cv && <div className="err mt8">{errors.cv}</div>}
+                                </div>
+                                <div className="field">
+                                    <label className="label">Portofolio</label>
+                                    <input className="input" type="file" accept=".pdf,.doc,.docx,.zip" onChange={(e) => setData('portofolio', e.target.files?.[0] || null)} />
+                                    <p className="hint" style={{ marginTop: 6 }}>Opsional. Format PDF/DOC/ZIP, maks. 10MB.</p>
+                                    {errors.portofolio && <div className="err mt8">{errors.portofolio}</div>}
+                                </div>
                                 <label className="checkbox" style={{ margin: '6px 0 20px' }}>
                                     <input type="checkbox" required />
                                     <span>Saya menyetujui data saya disimpan & digunakan untuk proses pendaftaran sesuai kebijakan privasi Caraka Muda (UU PDP).</span>
@@ -141,7 +133,7 @@ export default function Bergabung({ recruitmentOpen, recruitmentStatus, opensAt,
                                 <Icon name="cal" />
                             </div>
                             {(() => {
-                                const copy = (CLOSED_COPY[recruitmentStatus] || CLOSED_COPY.closed)(opensAt);
+                                const copy = recruitmentClosedCopy(recruitmentStatus, opensAt);
                                 return (
                                     <>
                                         <h3 style={{ fontSize: '1.5rem' }}>{copy.title}</h3>

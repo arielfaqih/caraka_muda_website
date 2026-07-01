@@ -31,6 +31,12 @@ export default function Form({ album }) {
         }
     }
 
+    function setCover(photo) {
+        router.put(route('admin.album.foto.sampul', [album.id, photo.id]));
+    }
+
+    const coverOrder = album?.photos?.length ? Math.min(...album.photos.map((p) => p.order)) : null;
+
     return (
         <AdminLayout title={editing ? 'Ubah Album' : 'Tambah Album'}>
             <h1 style={{ fontSize: '1.9rem', marginBottom: 22 }}>{editing ? 'Ubah Album' : 'Tambah Album'}</h1>
@@ -57,25 +63,43 @@ export default function Form({ album }) {
                     <input className="input" type="file" accept="image/*" multiple onChange={uploadPhotos} />
                     <p className="hint" style={{ marginTop: 6 }}>Bisa pilih beberapa foto sekaligus. Maks. 5MB per foto.</p>
 
+                    <p className="hint" style={{ marginTop: 10 }}>Foto bertanda <Icon name="award" /> adalah sampul album yang tampil di halaman Galeri. Klik foto lain untuk menjadikannya sampul.</p>
                     <div className="row gap12 wrap" style={{ marginTop: 16 }}>
-                        {album.photos.map((p) => (
-                            <div key={p.id} style={{ position: 'relative', width: 100, height: 100 }}>
-                                <img
-                                    src={p.photo_url}
-                                    alt=""
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--r-sm)', border: '1.5px solid var(--line-2)' }}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => destroyPhoto(p)}
-                                    className="iconbtn"
-                                    style={{ position: 'absolute', top: 4, right: 4, background: 'rgba(0,0,0,.55)', color: '#fff' }}
-                                    aria-label="Hapus foto"
-                                >
-                                    <Icon name="trash" />
-                                </button>
-                            </div>
-                        ))}
+                        {album.photos.map((p) => {
+                            const isCover = p.order === coverOrder;
+                            return (
+                                <div key={p.id} style={{ position: 'relative', width: 100, height: 100 }}>
+                                    <img
+                                        src={p.photo_url}
+                                        alt=""
+                                        onClick={() => !isCover && setCover(p)}
+                                        style={{
+                                            width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--r-sm)',
+                                            border: isCover ? '2.5px solid var(--red)' : '1.5px solid var(--line-2)',
+                                            cursor: isCover ? 'default' : 'pointer',
+                                        }}
+                                    />
+                                    {isCover && (
+                                        <span
+                                            className="iconbtn"
+                                            style={{ position: 'absolute', top: 4, left: 4, background: 'var(--red)', color: '#fff', width: 26, height: 26 }}
+                                            title="Sampul album"
+                                        >
+                                            <Icon name="award" />
+                                        </span>
+                                    )}
+                                    <button
+                                        type="button"
+                                        onClick={() => destroyPhoto(p)}
+                                        className="iconbtn"
+                                        style={{ position: 'absolute', top: 4, right: 4, background: 'rgba(0,0,0,.55)', color: '#fff' }}
+                                        aria-label="Hapus foto"
+                                    >
+                                        <Icon name="trash" />
+                                    </button>
+                                </div>
+                            );
+                        })}
                         {!album.photos.length && <p className="muted">Belum ada foto di album ini.</p>}
                     </div>
                 </div>

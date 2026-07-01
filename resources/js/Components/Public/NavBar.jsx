@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import Icon from '@/Components/Icon';
+import { recruitmentClosedCopy } from '@/lib/recruitment';
 
 const NAV = [
     ['beranda', 'Beranda', route('beranda')],
@@ -27,11 +28,23 @@ const MORE = [
 export default function NavBar() {
     const { url, props } = usePage();
     const [open, setOpen] = useState(false);
+    const [closedNotice, setClosedNotice] = useState(false);
     const path = url.split('?')[0];
     const tentangOn = TENTANG_SUB.some(([, , href]) => path === new URL(href).pathname);
     const user = props.auth?.user;
     const accountHref = user ? (user.role === 'admin' || user.role === 'super_admin' ? route('admin.dashboard') : route('profil-saya')) : null;
     const accountLabel = user ? (user.role === 'admin' || user.role === 'super_admin' ? 'Dashboard' : 'Profil Saya') : null;
+    const recruitment = props.recruitment || { open: false, status: 'closed', opensAt: null };
+
+    function handleDaftarClick(e) {
+        if (!recruitment.open) {
+            e.preventDefault();
+            setOpen(false);
+            setClosedNotice(true);
+        } else {
+            setOpen(false);
+        }
+    }
 
     return (
         <header className="nav">
@@ -77,6 +90,9 @@ export default function NavBar() {
                     <Link href={route('cari')} className="iconbtn desk-only" aria-label="Cari">
                         <Icon name="search" />
                     </Link>
+                    <Link href={route('bergabung')} onClick={handleDaftarClick} className="btn btn-primary btn-sm desk-only">
+                        <Icon name="join" /> Daftar
+                    </Link>
                     {accountHref && (
                         <Link href={accountHref} className="btn btn-primary btn-sm desk-only">
                             <Icon name="users" /> {accountLabel}
@@ -115,14 +131,36 @@ export default function NavBar() {
                         </Link>
                     ))}
                 </div>
-                {accountHref && (
-                    <div className="drawer-foot">
-                        <Link href={accountHref} className="btn btn-primary btn-block" onClick={() => setOpen(false)}>
+                <div className="drawer-foot">
+                    <Link href={route('bergabung')} onClick={handleDaftarClick} className="btn btn-primary btn-block">
+                        <Icon name="join" /> Daftar
+                    </Link>
+                    {accountHref && (
+                        <Link href={accountHref} className="btn btn-ghost btn-block mt8" onClick={() => setOpen(false)}>
                             <Icon name="users" /> {accountLabel}
                         </Link>
-                    </div>
-                )}
+                    )}
+                </div>
             </aside>
+
+            {closedNotice && (
+                <div className="pm-overlay" onClick={() => setClosedNotice(false)}>
+                    <div className="notice-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="pm-close" onClick={() => setClosedNotice(false)} aria-label="Tutup"><Icon name="x" /></button>
+                        <div className="ic"><Icon name="cal" /></div>
+                        {(() => {
+                            const copy = recruitmentClosedCopy(recruitment.status, recruitment.opensAt);
+                            return (
+                                <>
+                                    <h3>{copy.title}</h3>
+                                    <p>{copy.desc}</p>
+                                </>
+                            );
+                        })()}
+                        <button className="btn btn-primary" onClick={() => setClosedNotice(false)}>Oke, Mengerti</button>
+                    </div>
+                </div>
+            )}
         </header>
     );
 }

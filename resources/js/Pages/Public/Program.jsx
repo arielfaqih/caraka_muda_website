@@ -4,10 +4,12 @@ import Breadcrumb from '@/Components/Public/Breadcrumb';
 import Icon from '@/Components/Icon';
 
 const UNGGULAN = [
-    ['Caraka Mengajar', 'Berbagi ilmu ke sekolah & komunitas sekitar.', 'spark'],
-    ['Bakti Sosial', 'Aksi langsung membantu masyarakat yang membutuhkan.', 'heart'],
-    ['Diskusi Publik', 'Ruang bertukar gagasan soal isu kepemudaan.', 'mega'],
-    ['Kaderisasi', 'Mencetak pemimpin muda lewat pelatihan berjenjang.', 'users'],
+    ['Peliputan dan Dokumentasi', 'Meliput serta mendokumentasikan kegiatan akademik & non-akademik UPI.', 'news'],
+    ['Pelayanan Informasi oleh ULT', 'Menerima pertanyaan, aspirasi, dan pengaduan publik soal UPI.', 'shield'],
+    ['Penerbitan Rilis Pers', 'Menyusun & menyebarluaskan siaran pers ke media.', 'mega'],
+    ['Penerimaan Kunjungan Publik', 'Memfasilitasi kunjungan institusi & studi banding ke UPI.', 'users'],
+    ['Publikasi Media Sosial & Videotron', 'Mengelola konten medsos dan videotron resmi UPI.', 'image'],
+    ['Layanan Streaming', 'Menyiarkan kegiatan secara live streaming.', 'yt'],
 ];
 
 export default function Program({ divisi }) {
@@ -15,7 +17,7 @@ export default function Program({ divisi }) {
         <PublicLayout title="Program & Divisi">
             <section className="sec"><div className="container">
                 <Breadcrumb items={[{ label: 'Program' }]} />
-                <SectionHead eyebrow="Program & Divisi" title="Lima motor penggerak Caraka" />
+                <SectionHead eyebrow="Program & Divisi" title="Tiga motor penggerak Caraka" />
 
                 <div className="grid-3">
                     {divisi.map((d, i) => (

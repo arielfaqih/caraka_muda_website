@@ -12,4 +12,9 @@ class Album extends Model
     {
         return $this->hasMany(AlbumPhoto::class)->orderBy('order');
     }
+
+    public function coverPhoto()
+    {
+        return $this->hasOne(AlbumPhoto::class)->oldestOfMany('order');
+    }
 }

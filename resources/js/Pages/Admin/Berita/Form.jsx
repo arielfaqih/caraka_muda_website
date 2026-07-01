@@ -69,7 +69,14 @@ export default function Form({ berita }) {
                 <div className="form-grid">
                     <div className="field">
                         <label className="label">Kategori</label>
-                        <input className="input" value={data.category} onChange={(e) => setData('category', e.target.value)} />
+                        <select className="select" value={data.category} onChange={(e) => setData('category', e.target.value)}>
+                            <option value="Pengumuman">Pengumuman</option>
+                            <option value="Liputan Kegiatan">Liputan Kegiatan</option>
+                            <option value="Prestasi">Prestasi</option>
+                            <option value="Opini">Opini</option>
+                            <option value="Kerja Sama">Kerja Sama</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
                     </div>
                     <div className="field">
                         <label className="label">Status</label>

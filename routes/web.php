@@ -56,7 +56,8 @@ Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.sh
 Route::get('/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.index');
 Route::get('/kegiatan/{slug}', [KegiatanController::class, 'show'])->name('kegiatan.show');
 
-Route::get('/galeri', GaleriController::class)->name('galeri');
+Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri');
+Route::get('/galeri/{album}', [GaleriController::class, 'show'])->name('galeri.show');
 Route::get('/timeline', TimelineController::class)->name('timeline');
 Route::get('/prestasi', PrestasiController::class)->name('prestasi');
 Route::get('/transparansi', TransparansiController::class)->name('transparansi');
@@ -119,6 +120,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/album/{album}', [AdminAlbumController::class, 'destroy'])->name('album.destroy');
     Route::post('/album/{album}/foto', [AdminAlbumController::class, 'storePhoto'])->name('album.foto.store');
     Route::delete('/album/{album}/foto/{photo}', [AdminAlbumController::class, 'destroyPhoto'])->name('album.foto.destroy');
+    Route::put('/album/{album}/foto/{photo}/sampul', [AdminAlbumController::class, 'setCoverPhoto'])->name('album.foto.sampul');
 
     Route::get('/dokumen', [AdminDokumenController::class, 'index'])->name('dokumen.index');
     Route::get('/dokumen/create', [AdminDokumenController::class, 'create'])->name('dokumen.create');
@@ -156,6 +158,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/faq/{faq}', [AdminFaqController::class, 'destroy'])->name('faq.destroy');
 
     Route::get('/pendaftar', [AdminPendaftarController::class, 'index'])->name('pendaftar.index');
+    Route::put('/pendaftar/rekrutmen', [AdminPendaftarController::class, 'updateRecruitment'])->name('pendaftar.rekrutmen.update');
     Route::put('/pendaftar/{pendaftar}', [AdminPendaftarController::class, 'update'])->name('pendaftar.update');
 
     Route::get('/pesan', [AdminPesanController::class, 'index'])->name('pesan.index');

@@ -9,10 +9,17 @@ use Inertia\Response;
 
 class GaleriController extends Controller
 {
-    public function __invoke(): Response
+    public function index(): Response
     {
         return Inertia::render('Public/Galeri', [
-            'albums' => Album::with('photos')->withCount('photos')->latest()->get(),
+            'albums' => Album::withCount('photos')->with('coverPhoto')->latest()->get(),
+        ]);
+    }
+
+    public function show(Album $album): Response
+    {
+        return Inertia::render('Public/GaleriAlbum', [
+            'album' => $album->load('photos'),
         ]);
     }
 }

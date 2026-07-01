@@ -46,7 +46,7 @@ const BIDANG = [
         seksi: 'Seksi Komunikasi dan Media',
         nama: 'Media Sosial',
         icon: 'mega',
-        desc: 'Kanal komunikasi yang dikelola untuk menyebarluaskan informasi, menjaga citra, serta membangun hubungan dengan mahasiswa, staf, alumni, dan publik — memberikan info terkini tentang kegiatan kampus, prestasi mahasiswa dan dosen, serta kegiatan akademik dan non-akademik lainnya.',
+        desc: 'Kanal komunikasi yang dikelola untuk menyebarluaskan informasi, menjaga citra, serta membangun hubungan dengan mahasiswa, staf, alumni, dan publik - memberikan info terkini tentang kegiatan kampus, prestasi mahasiswa dan dosen, serta kegiatan akademik dan non-akademik lainnya.',
         layanan: [
             ['Instagram & TikTok', 'Foto & video kegiatan kampus, konten kreatif mahasiswa, reels & tren digital, dokumentasi acara dan prestasi.'],
             ['Facebook', 'Pengumuman resmi kampus, artikel & informasi kelembagaan, publikasi kegiatan akademik dan non-akademik.'],
@@ -57,19 +57,19 @@ const BIDANG = [
         seksi: 'Seksi Komunikasi dan Media',
         nama: 'Liputan & Siaran Pers',
         icon: 'news',
-        desc: 'Bertugas meliput, mendokumentasikan, serta membuat siaran pers berbagai kegiatan dan pencapaian UPI kepada media — mencakup agenda akademik & non-akademik, kegiatan pimpinan, kerja sama institusi, penelitian inovasi, hingga prestasi sivitas akademika. Memastikan informasi resmi tersampaikan secara akurat, faktual, dan tepat waktu, sekaligus memperkuat citra dan visibilitas UPI di tingkat nasional maupun internasional.',
+        desc: 'Bertugas meliput, mendokumentasikan, serta membuat siaran pers berbagai kegiatan dan pencapaian UPI kepada media, mencakup agenda akademik & non-akademik, kegiatan pimpinan, kerja sama institusi, penelitian inovasi, hingga prestasi sivitas akademika. Memastikan informasi resmi tersampaikan secara akurat, faktual, dan tepat waktu, sekaligus memperkuat citra dan visibilitas UPI di tingkat nasional maupun internasional.',
     },
     {
         seksi: 'Seksi Komunikasi dan Media',
         nama: 'Radio UPI',
         icon: 'phone',
-        desc: 'Media penyiaran resmi UPI yang berperan menyebarluaskan informasi kampus, mendukung layanan siaran pendidikan, melestarikan budaya, serta menghadirkan hiburan yang edukatif bagi masyarakat — terutama mahasiswa UPI sendiri.',
+        desc: 'Media penyiaran resmi UPI yang berperan menyebarluaskan informasi kampus, mendukung layanan siaran pendidikan, melestarikan budaya, serta menghadirkan hiburan yang edukatif bagi masyarakat, terutama mahasiswa UPI sendiri.',
     },
     {
         seksi: 'Seksi Komunikasi dan Media',
         nama: 'Penyiaran TV UPI',
         icon: 'yt',
-        desc: 'Media audiovisual universitas yang menghadirkan konten informatif, edukatif, dan inspiratif seputar UPI, kehidupan mahasiswa, prestasi sivitas akademika, serta tren dan isu terkini — meliputi podcast, talkshow, liputan kegiatan, dan video kreatif lainnya yang relevan bagi mahasiswa UPI.',
+        desc: 'Media audiovisual universitas yang menghadirkan konten informatif, edukatif, dan inspiratif seputar UPI, kehidupan mahasiswa, prestasi sivitas akademika, serta tren dan isu terkini, meliputi podcast, talkshow, liputan kegiatan, dan video kreatif lainnya yang relevan bagi mahasiswa UPI.',
     },
     {
         seksi: 'Seksi Informasi Publik dan Layanan Terpadu',
@@ -120,7 +120,7 @@ export default function Tentang({ settings }) {
                 <p className="muted" style={{ fontSize: '1.05rem', marginTop: -20, marginBottom: 12, maxWidth: 640 }}>
                     {settings.tagline}
                 </p>
-                <p className="muted" style={{ marginBottom: 30, maxWidth: 720 }}>
+                <p className="muted" style={{ marginBottom: 30, maxWidth: 720, textAlign: 'justify' }}>
                     <b>Caraka Muda UPI</b> adalah wadah resmi yang dibentuk oleh Kantor Komunikasi, Informasi dan Pelayanan
                     Publik (KKIPP) Universitas Pendidikan Indonesia. Organisasi ini mewadahi banyak mahasiswa pilihan yang
                     bertugas menjadi duta informasi positif, mendukung pengelolaan komunikasi publik, serta membantu relasi
@@ -162,7 +162,7 @@ export default function Tentang({ settings }) {
                         <Icon name="shield" />
                         <span>Caraka Muda terhitung sebagai program magang di KKIPP, membantu keberlangsungan program kerjanya.</span>
                     </div>
-                    <div className="prose" style={{ maxWidth: 'none' }}>
+                    <div className="prose" style={{ maxWidth: 'none', textAlign: 'justify' }}>
                         <p>
                             Kantor Komunikasi, Informasi dan Pelayanan Publik (<b>KKIPP</b>) adalah unit di Universitas
                             Pendidikan Indonesia yang berperan sebagai pusat komunikasi lembaga, pengelolaan informasi
@@ -173,7 +173,7 @@ export default function Tentang({ settings }) {
                         </p>
                         <p>
                             KKIPP juga menjadi penghubung antara universitas dengan publik melalui pengelolaan pengaduan,
-                            penyediaan informasi, serta koordinasi administrasi pendukung — dengan struktur yang terdiri
+                            penyediaan informasi, serta koordinasi administrasi pendukung dengan struktur yang terdiri
                             atas Seksi Komunikasi dan Media, Seksi Informasi Publik dan Layanan Terpadu, serta Seksi
                             Administrasi Umum dan Sumber Daya.
                         </p>
@@ -189,7 +189,7 @@ export default function Tentang({ settings }) {
                                 <div className="feat-ic"><Icon name={s.icon} /></div>
                                 <h3 style={{ fontSize: '1.05rem' }}>{s.nama}</h3>
                                 <p className="tag" style={{ display: 'block', marginBottom: 8 }}>{s.tagline}</p>
-                                <p style={{ fontSize: '.9rem' }}>{s.desc}</p>
+                                <p style={{ fontSize: '.9rem', textAlign: 'justify' }}>{s.desc}</p>
                                 <div className="row gap8 mt16">
                                     {s.tags.map((t) => <span key={t} className="pill red">{t}</span>)}
                                 </div>
@@ -207,12 +207,12 @@ export default function Tentang({ settings }) {
                                 <div className="feat-ic"><Icon name={b.icon} /></div>
                                 <p className="tag" style={{ display: 'block', marginBottom: 4 }}>{b.seksi}</p>
                                 <h3 style={{ fontSize: '1.05rem' }}>{b.nama}</h3>
-                                <p style={{ fontSize: '.9rem' }}>{b.desc}</p>
+                                <p style={{ fontSize: '.9rem', textAlign: 'justify' }}>{b.desc}</p>
                                 {!!b.layanan?.length && (
                                     <ul style={{ marginTop: 12, paddingLeft: 18, fontSize: '.85rem' }}>
                                         {b.layanan.map(([l, d]) => (
                                             <li key={l} style={{ marginBottom: 4 }}>
-                                                <b>{l}</b>{d ? ` — ${d}` : ''}
+                                                <b>{l}</b>{d ? ` - ${d}` : ''}
                                             </li>
                                         ))}
                                     </ul>
@@ -246,9 +246,9 @@ export default function Tentang({ settings }) {
                 {!!settings.values?.length && (
                     <div className="mt32">
                         <SectionHead eyebrow="Nilai Kami" title="Lima hal yang kami pegang" center />
-                        <div className="grid-auto">
+                        <div className="row wrap" style={{ justifyContent: 'center', gap: 24 }}>
                             {settings.values.map((v, i) => (
-                                <div key={i} className="value">
+                                <div key={i} className="value" style={{ flex: '0 1 290px' }}>
                                     <div className="vn">0{i + 1}</div>
                                     <h4>{v.n}</h4>
                                     <p>{v.d}</p>

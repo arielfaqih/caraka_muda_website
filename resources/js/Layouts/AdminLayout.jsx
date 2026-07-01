@@ -13,7 +13,7 @@ const TABS = [
     ['dokumen', 'Kelola Transparansi', 'doc', route('admin.dokumen.index')],
     ['mitra', 'Kelola Mitra', 'heart', route('admin.mitra.index')],
     ['faq', 'Kelola FAQ', 'help', route('admin.faq.index')],
-    ['pendaftar', 'Pendaftar', 'join', route('admin.pendaftar.index')],
+    ['pendaftar', 'Kelola Pendaftaran', 'join', route('admin.pendaftar.index')],
     ['pesan', 'Pesan Masuk', 'inbox', route('admin.pesan.index')],
     ['pengaturan', 'Pengaturan', 'settings', route('admin.pengaturan.edit')],
 ];

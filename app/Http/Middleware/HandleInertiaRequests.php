@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,6 +30,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $settings = Setting::current();
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -37,6 +40,12 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => $request->session()->get('success'),
                 'generated_password' => $request->session()->get('generated_password'),
+            ],
+            'recruitment' => [
+                'status' => $settings->recruitmentStatus(),
+                'open' => $settings->isRecruitmentOpen(),
+                'opensAt' => $settings->recruitment_opens_at,
+                'closesAt' => $settings->recruitment_closes_at,
             ],
             'ticker' => [
                 'Minta Liputan & Dokumentasi Kegiatan',

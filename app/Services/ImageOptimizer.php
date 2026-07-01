@@ -21,7 +21,7 @@ class ImageOptimizer
     public static function store(UploadedFile $file, string $directory, string $disk = 'public'): string
     {
         $manager = new ImageManager(new Driver());
-        $image = $manager->read($file->getPathname());
+        $image = $manager->decodePath($file->getPathname());
 
         if ($image->width() > self::MAX_WIDTH) {
             $image->scaleDown(width: self::MAX_WIDTH);

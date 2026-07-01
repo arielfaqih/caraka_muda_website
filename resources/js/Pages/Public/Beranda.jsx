@@ -105,7 +105,7 @@ export default function Beranda({ settings, featured, latestNews, divisi, albums
             {/* DIVISI */}
             <section className="sec alt"><div className="container">
                 <div className="reveal">
-                    <SectionHead eyebrow="Lima Divisi" title="Tempatmu berkarya" />
+                    <SectionHead eyebrow="Tiga Divisi" title="Tempatmu berkarya" />
                     <div className="grid-3" style={{ gap: 12 }}>
                         {divisi.map((d) => (
                             <Link key={d.id} href={route('program')} className="card pad lift" style={{ display: 'flex', gap: 16, alignItems: 'center', cursor: 'pointer' }}>

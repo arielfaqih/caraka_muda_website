@@ -28,3 +28,10 @@ export function personPhoto(seed = 0, size = 120) {
     const id = (Math.abs(seed) % 70) + 1;
     return `https://i.pravatar.cc/${size}?img=${id}`;
 }
+
+export function fmtDateTime(value) {
+    if (!value) return '';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}

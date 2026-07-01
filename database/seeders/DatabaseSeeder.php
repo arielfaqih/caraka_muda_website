@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Album;
-use App\Models\AlbumPhoto;
 use App\Models\AuditLog;
 use App\Models\Berita;
 use App\Models\Dokumen;
@@ -24,6 +22,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Idempotent: skip if admin user already exists (avoid duplicate key on re-seed).
+        if (User::where('email', 'admin@carakamuda.org')->exists()) {
+            $this->command->info('DatabaseSeeder: data sudah ada, dilewati.');
+            if (app()->environment('local')) {
+                $this->call(SampleMediaSeeder::class);
+            }
+            return;
+        }
+
         User::create([
             'name' => 'Admin Caraka',
             'email' => 'admin@carakamuda.org',
@@ -287,19 +294,10 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $albumSeed = [
-            ['title' => 'Bakti Sosial Desa Sukamaju', 'year' => 2026, 'photos' => 6],
-            ['title' => 'Pelantikan Pengurus 2025/2026', 'year' => 2025, 'photos' => 5],
-            ['title' => 'Malam Keakraban Anggota', 'year' => 2025, 'photos' => 8],
-            ['title' => 'Diskusi Publik Pemuda Digital', 'year' => 2026, 'photos' => 4],
-            ['title' => 'Aksi Bersih Lingkungan', 'year' => 2026, 'photos' => 7],
-            ['title' => 'Workshop Kreatif Divisi Media', 'year' => 2026, 'photos' => 3],
-        ];
-        foreach ($albumSeed as $i => $a) {
-            $album = Album::create(['title' => $a['title'], 'year' => $a['year'], 'seed' => $i]);
-            for ($p = 0; $p < $a['photos']; $p++) {
-                AlbumPhoto::create(['album_id' => $album->id, 'path' => "albums/{$album->id}/{$p}.jpg", 'order' => $p]);
-            }
+        // Album & foto contoh hanya di-seed di environment local (file .jpg fisik
+        // tidak ada di Supabase Storage; admin kelola konten galeri lewat panel).
+        if (app()->environment('local')) {
+            $this->call(SampleMediaSeeder::class);
         }
 
         $prestasiSeed = [

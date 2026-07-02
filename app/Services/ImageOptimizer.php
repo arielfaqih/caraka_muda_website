@@ -21,21 +21,31 @@ class ImageOptimizer
      */
     public static function store(UploadedFile $file, string $directory, string $disk = 'public'): string
     {
-        $manager = new ImageManager(new Driver());
-        $image = $manager->decodePath($file->getPathname());
+        try {
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decodePath($file->getPathname());
 
-        if ($image->width() > self::MAX_WIDTH) {
-            $image->scaleDown(width: self::MAX_WIDTH);
+            if ($image->width() > self::MAX_WIDTH) {
+                $image->scaleDown(width: self::MAX_WIDTH);
+            }
+
+            $encoded = $image->encode(new WebpEncoder(quality: self::WEBP_QUALITY));
+        } catch (\Exception $e) {
+            Log::error('ImageOptimizer GD processing gagal', [
+                'file_mime' => $file->getMimeType(),
+                'file_size' => $file->getSize(),
+                'exception' => get_class($e),
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
         }
-
-        $encoded = $image->encode(new WebpEncoder(quality: self::WEBP_QUALITY));
 
         $path = $directory . '/' . Str::random(40) . '.webp';
 
         try {
             Storage::disk($disk)->put($path, (string) $encoded);
         } catch (\Exception $e) {
-            Log::error('ImageOptimizer upload gagal', [
+            Log::error('ImageOptimizer S3 upload gagal', [
                 'disk' => $disk,
                 'path' => $path,
                 'exception' => get_class($e),

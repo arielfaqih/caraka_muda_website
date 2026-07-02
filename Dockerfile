@@ -19,6 +19,16 @@ RUN npm run build
 # ---- Stage 3: runtime image ----
 FROM serversideup/php:8.3-fpm-nginx AS app
 
+# Recompile GD with WebP + JPEG support (needed by intervention/image WebpEncoder).
+# serversideup base image has GD but WebP is not always compiled in.
+USER root
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends libwebp-dev libjpeg-dev libpng-dev && \
+    docker-php-ext-configure gd --with-webp --with-jpeg && \
+    docker-php-ext-install -j$(nproc) gd && \
+    rm -rf /var/lib/apt/lists/*
+USER www-data
+
 WORKDIR /var/www/html
 
 COPY --chown=www-data:www-data . .

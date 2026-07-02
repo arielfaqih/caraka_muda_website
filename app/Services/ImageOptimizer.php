@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -30,7 +31,18 @@ class ImageOptimizer
         $encoded = $image->encode(new WebpEncoder(quality: self::WEBP_QUALITY));
 
         $path = $directory . '/' . Str::random(40) . '.webp';
-        Storage::disk($disk)->put($path, (string) $encoded);
+
+        try {
+            Storage::disk($disk)->put($path, (string) $encoded);
+        } catch (\Exception $e) {
+            Log::error('ImageOptimizer upload gagal', [
+                'disk' => $disk,
+                'path' => $path,
+                'exception' => get_class($e),
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
 
         return $path;
     }

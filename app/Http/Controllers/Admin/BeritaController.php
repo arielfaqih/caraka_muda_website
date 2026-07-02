@@ -35,7 +35,11 @@ class BeritaController extends Controller
         $data['published_at'] = now();
         $data['seed'] = Berita::count();
         if ($request->hasFile('image')) {
-            $data['image'] = ImageOptimizer::store($request->file('image'), 'berita');
+            try {
+                $data['image'] = ImageOptimizer::store($request->file('image'), 'berita');
+            } catch (\Exception $e) {
+                return back()->withErrors(['image' => 'Gagal mengunggah gambar. Coba lagi.'])->withInput();
+            }
         }
 
         $berita = Berita::create($data);
@@ -55,10 +59,15 @@ class BeritaController extends Controller
         $data['slug'] = Str::slug($data['title']);
 
         if ($request->hasFile('image')) {
+            try {
+                $newPath = ImageOptimizer::store($request->file('image'), 'berita');
+            } catch (\Exception $e) {
+                return back()->withErrors(['image' => 'Gagal mengunggah gambar. Coba lagi.'])->withInput();
+            }
             if ($berita->image) {
                 Storage::disk('public')->delete($berita->image);
             }
-            $data['image'] = ImageOptimizer::store($request->file('image'), 'berita');
+            $data['image'] = $newPath;
         }
 
         $berita->update($data);

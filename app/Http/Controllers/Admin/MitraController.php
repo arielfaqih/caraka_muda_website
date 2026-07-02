@@ -31,7 +31,11 @@ class MitraController extends Controller
         $data = $this->validated($request);
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = ImageOptimizer::store($request->file('logo'), 'mitra');
+            try {
+                $data['logo'] = ImageOptimizer::store($request->file('logo'), 'mitra');
+            } catch (\Exception $e) {
+                return back()->withErrors(['logo' => 'Gagal mengunggah logo. Coba lagi.'])->withInput();
+            }
         }
 
         $mitra = Mitra::create($data);
@@ -50,10 +54,15 @@ class MitraController extends Controller
         $data = $this->validated($request);
 
         if ($request->hasFile('logo')) {
+            try {
+                $newPath = ImageOptimizer::store($request->file('logo'), 'mitra');
+            } catch (\Exception $e) {
+                return back()->withErrors(['logo' => 'Gagal mengunggah logo. Coba lagi.'])->withInput();
+            }
             if ($mitra->logo) {
                 Storage::disk('public')->delete($mitra->logo);
             }
-            $data['logo'] = ImageOptimizer::store($request->file('logo'), 'mitra');
+            $data['logo'] = $newPath;
         }
 
         $mitra->update($data);

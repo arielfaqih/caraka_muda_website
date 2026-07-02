@@ -28,7 +28,11 @@ class DokumenController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $this->validated($request);
-        $data['file_path'] = $request->file('file')->store('dokumen', 'public');
+        try {
+            $data['file_path'] = $request->file('file')->store('dokumen', 'public');
+        } catch (\Exception $e) {
+            return back()->withErrors(['file' => 'Gagal mengunggah file. Coba lagi.'])->withInput();
+        }
 
         $dokumen = Dokumen::create($data);
         AuditLog::log('dokumen', "Tambah dokumen: {$dokumen->title}");
@@ -46,10 +50,15 @@ class DokumenController extends Controller
         $data = $this->validated($request, false);
 
         if ($request->hasFile('file')) {
+            try {
+                $newPath = $request->file('file')->store('dokumen', 'public');
+            } catch (\Exception $e) {
+                return back()->withErrors(['file' => 'Gagal mengunggah file. Coba lagi.'])->withInput();
+            }
             if ($dokumen->file_path) {
                 Storage::disk('public')->delete($dokumen->file_path);
             }
-            $data['file_path'] = $request->file('file')->store('dokumen', 'public');
+            $data['file_path'] = $newPath;
         }
 
         $dokumen->update($data);

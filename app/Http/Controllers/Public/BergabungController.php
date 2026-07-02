@@ -8,7 +8,6 @@ use App\Models\Pendaftar;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -43,9 +42,13 @@ class BergabungController extends Controller
             'portofolio' => ['nullable', 'file', 'mimes:pdf,doc,docx,zip', 'max:10240'],
         ]);
 
-        $data['cv_path'] = $request->file('cv')->store('pendaftar/cv', 'public');
-        if ($request->hasFile('portofolio')) {
-            $data['portofolio_path'] = $request->file('portofolio')->store('pendaftar/portofolio', 'public');
+        try {
+            $data['cv_path'] = $request->file('cv')->store('pendaftar/cv', 'public');
+            if ($request->hasFile('portofolio')) {
+                $data['portofolio_path'] = $request->file('portofolio')->store('pendaftar/portofolio', 'public');
+            }
+        } catch (\Exception $e) {
+            return back()->withErrors(['cv' => 'Gagal mengunggah file. Coba lagi beberapa saat.'])->withInput();
         }
         unset($data['cv'], $data['portofolio']);
 

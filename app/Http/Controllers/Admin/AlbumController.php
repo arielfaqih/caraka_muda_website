@@ -72,9 +72,14 @@ class AlbumController extends Controller
 
         $order = $album->photos()->max('order') + 1;
         foreach ($request->file('photos') as $file) {
+            try {
+                $path = ImageOptimizer::store($file, "albums/{$album->id}");
+            } catch (\Exception $e) {
+                return back()->withErrors(['photos' => 'Gagal mengunggah satu atau lebih foto. Coba lagi.']);
+            }
             AlbumPhoto::create([
                 'album_id' => $album->id,
-                'path' => ImageOptimizer::store($file, "albums/{$album->id}"),
+                'path' => $path,
                 'order' => $order++,
             ]);
         }

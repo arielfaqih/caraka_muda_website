@@ -48,7 +48,11 @@ class PengurusController extends Controller
         $data = $this->validated($request);
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'pengurus');
+            try {
+                $data['photo'] = ImageOptimizer::store($request->file('photo'), 'pengurus');
+            } catch (\Exception $e) {
+                return back()->withErrors(['photo' => 'Gagal mengunggah foto. Coba lagi.'])->withInput();
+            }
         }
 
         $pengurus = Pengurus::create($data);
@@ -70,10 +74,15 @@ class PengurusController extends Controller
         $data = $this->validated($request);
 
         if ($request->hasFile('photo')) {
+            try {
+                $newPath = ImageOptimizer::store($request->file('photo'), 'pengurus');
+            } catch (\Exception $e) {
+                return back()->withErrors(['photo' => 'Gagal mengunggah foto. Coba lagi.'])->withInput();
+            }
             if ($pengurus->photo) {
                 Storage::disk('public')->delete($pengurus->photo);
             }
-            $data['photo'] = ImageOptimizer::store($request->file('photo'), 'pengurus');
+            $data['photo'] = $newPath;
         }
 
         $pengurus->update($data);

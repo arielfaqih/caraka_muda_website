@@ -39,11 +39,15 @@ use Illuminate\Support\Facades\Route;
 | Public site
 |--------------------------------------------------------------------------
 */
+// Lean health-check for keep-alive cron (no Inertia props, no Vite Link headers).
 Route::get('/ping', function () {
     DB::select('select 1');
 
-    return response('ok');
-})->name('ping');
+    return response()->noContent();
+})->withoutMiddleware([
+    \App\Http\Middleware\HandleInertiaRequests::class,
+    \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+])->name('ping');
 
 Route::get('/', HomeController::class)->name('beranda');
 Route::get('/tentang', TentangController::class)->name('tentang');
